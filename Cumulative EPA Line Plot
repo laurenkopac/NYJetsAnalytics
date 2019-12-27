@@ -1,0 +1,143 @@
+##########################################################
+#  
+#    daRnold's Jets Analytics
+#    Gase Analysis: Cumulative EPA Line Plot
+#    10/24/2019
+#
+##########################################################
+
+#load packages needed
+library(nflscrapR)
+library(teamcolors)
+library(dplyr)
+library(na.tools)
+library(magrittr)
+library(ggplot2)
+library(tidyverse)
+library(ggimage)
+library(scales)
+library(extrafont)
+library(extrafontdb)
+library(stats)
+library(ggrepel)
+library(RCurl)
+library(XML)
+
+#pull 2019 season data (this will take a while to run for the most up to date season data)
+season_2019 <- scrape_season_play_by_play(2019, teams = "NYJ")
+
+#pull historical data
+season_2018 <- read_csv("https://raw.githubusercontent.com/ryurko/nflscrapR-data/master/play_by_play_data/regular_season/reg_pbp_2018.csv")
+season_2017 <- read_csv("https://raw.githubusercontent.com/ryurko/nflscrapR-data/master/play_by_play_data/regular_season/reg_pbp_2017.csv")
+season_2016 <- read_csv("https://raw.githubusercontent.com/ryurko/nflscrapR-data/master/play_by_play_data/regular_season/reg_pbp_2016.csv")
+
+#create new variables, filter by Gase coached teams
+nyj_2019 <- season_2019 %>%
+  filter(posteam=="NYJ", !is.na(epa))
+mia_2018 <- season_2018 %>%
+  filter(posteam=="MIA", !is.na(epa))
+mia_2017 <- season_2017 %>%
+  filter(posteam=="MIA", !is.na(epa))
+mia_2016 <- season_2016 %>%
+  filter(posteam=="MIA", !is.na(epa))
+
+#define new field for cumlative EPA and play number over the course of a season
+#do this for every season individually
+nyj_2019[,"cum. epa"] <- cumsum(nyj_2019$epa)
+nyj_2019$play_num <- seq.int(nrow(nyj_2019))
+nyj_2019$season <- "2019"
+
+mia_2018[,"cum. epa"] <- cumsum(mia_2018$epa)
+mia_2018$play_num <- seq.int(nrow(mia_2018))
+mia_2018$season <- "2018"
+
+mia_2017[,"cum. epa"] <- cumsum(mia_2017$epa)
+mia_2017$play_num <- seq.int(nrow(mia_2017))
+mia_2017$season <- "2017"
+
+mia_2016[,"cum. epa"] <- cumsum(mia_2016$epa)
+mia_2016$play_num <- seq.int(nrow(mia_2016))
+mia_2016$season <- "2016"
+
+#bind all seasons to a new variable
+gase <- rbind(nyj_2019, mia_2018, mia_2017, mia_2016)
+
+#read in team logos, colors, and records
+logos <- read_csv("https://raw.githubusercontent.com/daRnoldsJetsAnalytics/NY_Jets_Analtyics_Public/master/logosdf.csv")
+#read in team colors from github (SEA primary colors swapped for "action grean")
+team_colors <- read_csv("https://raw.githubusercontent.com/daRnoldsJetsAnalytics/NY_Jets_Analtyics_Public/master/teamcolorsdf.csv")
+
+# Pull out Jets colors (used in title color and border color)
+nyj_color <- team_colors %>%
+  filter(team == "NYJ") %>%
+  pull(color)
+
+#the below functions are the ben baldwin mutations, not necessarily used in the plot, but always helpful for data clean up
+pbp_2019 <- gase %>%
+  filter(!is_na(epa), play_type=="no_play" | play_type=="pass" | play_type=="run")
+
+#add new variables per Ben Baldwin Tutorial - Pass, Rush, Success. Includes penalties
+pbp_2019 <- pbp_2019 %>%
+  mutate(
+    pass = if_else(str_detect(desc, "(pass)|(sacked)|(scramble)"), 1, 0),
+    rush = if_else(str_detect(desc, "(left end)|(left tackle)|(left guard)|(up the middle)|(right guard)|(right tackle)|(right end)") & pass == 0, 1, 0),
+    success = ifelse(epa>0, 1 , 0)
+  )
+
+pbp_players <- pbp_2019 %>% 
+  mutate(
+    passer_player_name = ifelse(play_type == "no_play" & pass == 1, 
+                                str_extract(desc, "(?<=\\s)[A-Z][a-z]*\\.\\s?[A-Z][A-z]+(\\s(I{2,3})|(IV))?(?=\\s((pass)|(sack)|(scramble)))"),
+                                passer_player_name),
+    receiver_player_name = ifelse(play_type == "no_play" & str_detect(desc, "pass"), 
+                                  str_extract(desc, 
+                                              "(?<=to\\s)[A-Z][a-z]*\\.\\s?[A-Z][A-z]+(\\s(I{2,3})|(IV))?"),
+                                  receiver_player_name),
+    rusher_player_name = ifelse(play_type == "no_play" & rush == 1, 
+                                str_extract(desc, "(?<=\\s)[A-Z][a-z]*\\.\\s?[A-Z][A-z]+(\\s(I{2,3})|(IV))?(?=\\s((left end)|(left tackle)|(left guard)|		(up the middle)|(right guard)|(right tackle)|(right end)))"),
+                                rusher_player_name)
+  )
+
+#rename final data frame to gase_df
+gase_df <- pbp_players
+
+#plot gase_df
+gase_df %>%
+  ggplot(aes(x=play_num, y=`cum. epa`, color=season))+
+  geom_hline(yintercept=0, size=1, color="black")+
+  geom_line(size=1.25)+
+  scale_color_manual(values=c("2019"=nyj_color, "2018"="#008e97", "2017"="#f58220","2016"="#005778"), 
+                     labels=c("2019"="2019 - NYJ (5-9)", "2018"="2018 - MIA (7-9)", "2017"="2017 - MIA (6-10)","2016"="2016 - MIA (10-6)"))+
+  scale_x_continuous(breaks=seq(0,1500,100), expand=c(.005,0))+
+  labs(x = "Number of Plays",
+       y = "Total EPA",
+       caption = "@NYJAnalytics, Data from @nflscrapR",
+       title = "Head Coach Gase: Offensive Guru",
+       subtitle = "2016-2019 Seasons, Cummlative EPA on Offense")+
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "white", color = nyj_color),
+        panel.grid.major.x = element_line(color = "grey90"), 
+        panel.grid.major.y = element_line(color = "grey90"), 
+        panel.grid.minor.y = element_line(color = "grey90"), 
+        plot.title=element_text(size=18, 
+                                color= nyj_color,
+                                family = "Arial Narrow",
+                                lineheight=2,
+                                face="bold"),  # title
+        plot.subtitle=element_text(size=16,
+                                   family = "Arial Narrow"),  # subtitle
+        plot.caption=element_text(size=11,
+                                  color = nyj_color,
+                                  family = "Arial Narrow",
+                                  hjust = .99,
+                                  face="bold"),  # caption
+        axis.title.x=element_text(size=12,
+                                  family="Arial Narrow",
+                                  face="bold"),  # X axis title
+        axis.title.y=element_text(size=12, 
+                                  family = "Arial Narrow",
+                                  face="bold")# Y axis title,
+  )
+
+#save png file to your machine, diminsions optimized for twitter posting
+ggsave("HC Gase through wk 15.png", path="%local path%",width=12, height = 7.5, dpi = 850, units= "in", device="png")
