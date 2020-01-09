@@ -1,4 +1,8 @@
-# NY Jets Analtyics Public Repository
-LJ. Kopac
+# NFL and New York Jets Data Analysis
 
-Public data dump of scripts and dataframes used to create content for the twitter account @NYJetsAnalytics.
+Welcome to my public repositiory for code used to make content for the Twitter account [@NYJetsAnalytics](https://twitter.com/NYJetsAnalytics). DMs are always open for questions!
+
+
+
+
+-L.Kopac
