@@ -1,6 +1,6 @@
 # NFL and New York Jets Data Analysis
 
-Welcome to my public repositiory for code and documenation used to make content for [NYJetsAnalytics](https://twitter.com/NYJetsAnalytics). All of my plots are created using R, so obviously, you'll need the language installed on your computer before getting started. I personally use [RStudio](https://rstudio.com/) to run scripts in R and create charts and animations.
+Welcome to my public repositiory for code and documenation used to make content for [NYJetsAnalytics](https://twitter.com/NYJetsAnalytics). All of my plots are created using R, so obviously, you'll need the language installed on your computer before getting started. I personally use [RStudio](https://rstudio.com/) to run scripts, create charts and animations.
 
 ## Getting Started with nflscrapR
 
