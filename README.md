@@ -20,7 +20,7 @@ Looking advance your visualizations? How about animiated Win Probaility charts f
 
 If you run into issues with my code, feel free to create an issue here, chances are you're not the only one experiencing it. For general questions, my DMs are open on twitter. Disclaimer: while I love football and analyzing data, this isn't my day job, so I may not respond right away, but I do check in frequently. 
 
-As you play with publically avaiable code and try to make your own, you'll probably get stuck along the way. Should this happen, you can always try what the pros do: google it. 
+As you play with publically available code and try to make your own, you'll probably get stuck along the way. Should this happen, you can always try what the pros do: google it. 
 
 Happy plotting! J-E-T-S JETS JETS JETS.
 
