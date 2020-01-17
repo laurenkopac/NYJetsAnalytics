@@ -4,7 +4,7 @@ Welcome to my public repositiory for code and documenation used to make content 
 
 ## Getting Started with nflscrapR
 
-If you're interested in learning more about **nflscrapR** in general, check out the [R Package documentation](https://github.com/maksimhorowitz/nflscrapR) managed by the incredible **Ron Yurko** ([@Stat_Ron](https://twitter.com/Stat_Ron)) and **Maksim Horowitz** ([@bklynmaks](https://twitter.com/bklynmaks)). 
+If you're interested in learning more about **nflscrapR** in general, check out the [package documentation](https://github.com/maksimhorowitz/nflscrapR) managed by the incredible **Ron Yurko** ([@Stat_Ron](https://twitter.com/Stat_Ron)) and **Maksim Horowitz** ([@bklynmaks](https://twitter.com/bklynmaks)). 
 
 The nflscrapR account ([@nflscrapR](https://twitter.com/nflscrapR)) is always retweeting and sharing great content to learn from and build on.
 
