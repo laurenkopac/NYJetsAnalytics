@@ -10,11 +10,11 @@ The nflscrapR account ([@nflscrapR](https://twitter.com/nflscrapR)) is always re
 
 ### General Tutorials
 
-While I try to make my code as general and readable as possible, sometimes it's best to start with the basics. 
+While I try to make my code as readable and reproducable as possible, sometimes it's best to start with the basics. 
 
-Ben Baldwin ([@benbaldwin](https://twitter.com/benbaldwin)) has an excellent [basic nflscrapR tutorial](https://gist.github.com/guga31bb/5634562c5a2a7b1e9961ac9b6c568701) that covers everything from installing the packages to incorporating team logos in plots.
+Ben Baldwin ([@benbaldwin](https://twitter.com/benbaldwin)) has an excellent [basic nflscrapR tutorial](https://gist.github.com/guga31bb/5634562c5a2a7b1e9961ac9b6c568701) that covers everything from installing the package to incorporating team logos in plots.
 
-Looking to add some color to your plots? How about animiated Win Probaility charts for your team? Lee Sharpe ([@LeeSharpeNFL](https://twitter.com/LeeSharpeNFL)) is a great resource to follow and has built a [great repository](https://github.com/leesharpe/nfldata) for sharing code and tutorials. 
+Looking advance your visualizations? How about animiated Win Probaility charts for your team? Lee Sharpe ([@LeeSharpeNFL](https://twitter.com/LeeSharpeNFL)) is a great resource to follow and has built a [great repository](https://github.com/leesharpe/nfldata) for sharing code and tutorials. 
 
 ## Additional Help
 
