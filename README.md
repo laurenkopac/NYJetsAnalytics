@@ -6,7 +6,7 @@ Welcome to my public repositiory for documentation and code used to make content
 
 If you're interested in learning more about **nflscrapR** in general, check out the [package documentation](https://github.com/maksimhorowitz/nflscrapR) managed by the incredible **Ron Yurko** ([@Stat_Ron](https://twitter.com/Stat_Ron)) and **Maksim Horowitz** ([@bklynmaks](https://twitter.com/bklynmaks)). 
 
-The nflscrapR account ([@nflscrapR](https://twitter.com/nflscrapR)) is always retweeting and sharing great content to learn from and build on.
+The nflscrapR account ([@nflscrapR](https://twitter.com/nflscrapR)) is always sharing and retweeting great content to learn from and build on.
 
 ### General Tutorials
 
@@ -18,9 +18,9 @@ Looking advance your visualizations? How about animiated Win Probaility charts f
 
 ## Additional Help
 
-If you run into issues with my code, feel free to create an issue here, chances are you're not the only one experiencing it. For general questions, my DMs are open on twitter. Disclaimer: while I love football and analyzing data, this isn't my day job, so I may not respond right away, but I do check in frequently. 
-
 As you play with publically available code and try to make your own, you'll probably get stuck along the way. Should this happen, you can always try what the pros do: google it. 
+
+If you run into issues with my code, feel free to create an issue here, chances are you're not the only one experiencing it. For general questions, my DMs are open on twitter. Disclaimer: while I love football and analyzing data, this isn't my day job, so I may not respond right away, but I do check in frequently. 
 
 Happy plotting! J-E-T-S JETS JETS JETS.
 
