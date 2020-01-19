@@ -66,8 +66,8 @@ teams <- unique(pbp_players$posteam)
 #define empty data frame
 df <- data.frame()
 
-#for loop to create data frame, df, containing all teams, create sum_epa for each team's cumulative EPA for the season
-#yes, i in teams was intentional
+#for loop to create data frames for each team, fills data frame (df) with all team data by rbind
+#create sum_epa for each team's cumulative EPA for the season
 for (i in teams){
    df <- rbind(df, assign(paste0(tolower(i)),
     pbp_players %>%
@@ -79,12 +79,15 @@ for (i in teams){
    )
 }
 
+#mutate df, add variable "play_num" to count the number of total offensive plays run by each team
 df <- df %>% 
   group_by(posteam) %>% 
   mutate(
     play_num = seq_along(posteam)
   ) 
 
+#create logos_df from df. this data frame will contain coordinates that will tell ggplot where to plot team logos
+#summarise by team, x coordinate = last offensive play in the sequence, y coordinate = cumulative EPA on final play
 logos_df <- df %>%
   group_by(posteam) %>%
   summarise(
