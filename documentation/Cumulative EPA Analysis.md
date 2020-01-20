@@ -14,7 +14,7 @@
 
 If there's one thing (anything) that Jets fans loved in 2019, it was putting down newly acquired head coach, Adam Gase. The fan based pulled out the pitch forks after some brutal loses, including a shut out on MNF against the Patriots. 
 
-Despite the struggles in Miami that led to his firing and his losing inaugural season in New York, he's been described by some outside the organization as an "offensive guru". I decieded to take a closer look at these offenses.
+Despite the struggles in Miami that led to his firing and his losing inaugural season in New York, he's been described by some outside the organization as an "offensive guru." I decieded to take a closer look at his offenses.
 
 ## Analysis
 
