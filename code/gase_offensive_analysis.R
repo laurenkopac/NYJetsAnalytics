@@ -6,28 +6,20 @@
 #
 ##########################################################
 
-#load packages needed
+# Load libraries ----
 library(nflscrapR)
-library(teamcolors)
 library(dplyr)
 library(na.tools)
 library(magrittr)
 library(ggplot2)
 library(tidyverse)
 library(ggimage)
-library(scales)
-library(extrafont)
-library(extrafontdb)
-library(stats)
-library(ggrepel)
-library(RCurl)
-library(XML)
 library(ggthemes)
 
-#read in team colors from github (SEA primary colors swapped for "action grean")
+# Read in team colors ----
 team_colors <- read_csv("https://raw.githubusercontent.com/NYJetsAnalytics/NYJetsAnalytics/master/data_sets/teamcolorsdf.csv")
 
-# Pull out team colors used in plot later
+# Pull out Jets primary color and Dolphins colors, to be used in the plot ----
 nyj_color <- team_colors %>%
   filter(team == "NYJ") %>%
   pull(color)
@@ -44,25 +36,27 @@ mia_color3 <- team_colors %>%
   filter(team == "MIA") %>%
   pull(color3)
 
-#pull play-by-play data for seasons where Gase was a head coach
+# Pull play-by-play data for seasons where Gase was a head coach ----
 season_2019 <- read_csv("https://raw.githubusercontent.com/ryurko/nflscrapR-data/master/play_by_play_data/regular_season/reg_pbp_2019.csv")
 season_2018 <- read_csv("https://raw.githubusercontent.com/ryurko/nflscrapR-data/master/play_by_play_data/regular_season/reg_pbp_2018.csv")
 season_2017 <- read_csv("https://raw.githubusercontent.com/ryurko/nflscrapR-data/master/play_by_play_data/regular_season/reg_pbp_2017.csv")
 season_2016 <- read_csv("https://raw.githubusercontent.com/ryurko/nflscrapR-data/master/play_by_play_data/regular_season/reg_pbp_2016.csv")
 
-#create new data frames, filter by Gase coached teams where epa is not NA
+# Create new data frames, filter by Gase coached teams where epa is not NA ----
 nyj_2019 <- season_2019 %>%
-  filter(posteam=="NYJ", !is.na(epa))
-mia_2018 <- season_2018 %>%
-  filter(posteam=="MIA", !is.na(epa))
-mia_2017 <- season_2017 %>%
-  filter(posteam=="MIA", !is.na(epa))
-mia_2016 <- season_2016 %>%
-  filter(posteam=="MIA", !is.na(epa))
+  filter(posteam=="NYJ" & !is.na(epa))
 
-#define new field for cumlative EPA and play number over the course of a season
+mia_2018 <- season_2018 %>%
+  filter(posteam=="MIA" & !is.na(epa))
+
+mia_2017 <- season_2017 %>%
+  filter(posteam=="MIA" & !is.na(epa))
+
+mia_2016 <- season_2016 %>%
+  filter(posteam=="MIA" & !is.na(epa))
+
+# Define new field for cumulative EPA. Index plays over the course of a season. Add field "season" ----
 #do this for every season individually
-#add new field "season"
 
 nyj_2019[,"cum. epa"] <- cumsum(nyj_2019$epa)
 nyj_2019$play_num <- seq.int(nrow(nyj_2019))
@@ -80,10 +74,10 @@ mia_2016[,"cum. epa"] <- cumsum(mia_2016$epa)
 mia_2016$play_num <- seq.int(nrow(mia_2016))
 mia_2016$season <- "2016"
 
-#bind all seasons to a new variable
+# Bind all season data frames to a new data frame (gase) ----
 gase <- rbind(nyj_2019, mia_2018, mia_2017, mia_2016)
 
-## BEGIN BEN BALDWIN MUTATIONS ##
+# BEN BALDWIN MUTATIONS ----
 
 #filter by plays where play type is "no play", "pass", or "rush". remove plays where epa is NA
 pbp_2019 <- gase %>%
@@ -112,10 +106,10 @@ pbp_players <- pbp_2019 %>%
                                 rusher_player_name)
   )
 
-#rename final data frame to gase_df
+# Rename final data frame to gase_df ----
 gase_df <- pbp_players
 
-#plot gase_df
+# Plot gase_df ----
 gase_df %>%
   ggplot(aes(x=play_num, y=`cum. epa`, color=season))+
   geom_hline(yintercept=0, size=1, color="black")+
@@ -126,7 +120,7 @@ gase_df %>%
   scale_y_continuous(breaks=seq(-150,50, 25), expand = c(.05,0))+
   labs(x = "Number of Plays",
        y = "Total EPA",
-       caption = "Plot by @NYJAnalytics, Data from @nflscrapR",
+       caption = "Plot by @NYJAnalytics | Data from @nflscrapR",
        title = "Head Coach Gase: Offensive Guru",
        subtitle = "2016-2019 Seasons, Cumulative EPA on Offense")+
   ggthemes::theme_fivethirtyeight()+
@@ -136,5 +130,5 @@ gase_df %>%
   )
 
 
-#save png file to your machine, diminsions optimized for twitter posting
+# Save png file to your machine, diminsions optimized for twitter posting ----
 ggsave("Cumulative EPA over Multiple Seasons.png", path="%local path here%",width=12, height = 7.5, dpi = 850, units= "in", device="png")
